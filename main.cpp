@@ -146,24 +146,31 @@ int main() {
     int board[N][N];
     int choice, algorithm;
     
-    cout << "15-Puzzle Problem:" << endl;
-    cout << "1. Create a puzzle" << endl;
-    cout << "2. Random a puzzle" << endl;
-    cout << "3. Exit" << endl << endl;
-    cin >> choice;
-    
-    switch (choice) {
-        case 1:
-            inputBoard(board);
-            cout << endl << "Created board:" << endl;
-            printBoard(board);
-            break;
-        case 2:
-            randomize(board);
-            cout << endl << "Created board:" << endl;
-            printBoard(board);
-            break;
+    while (true) {
+        cout << "15-Puzzle Problem:" << endl;
+        cout << "1. Create a puzzle" << endl;
+        cout << "2. Random a puzzle" << endl;
+        cout << "3. Exit" << endl << endl;
+        cin >> choice;
+        
+        switch (choice) {
+            case 1:
+                inputBoard(board);
+                cout << endl << "Created board:" << endl;
+                printBoard(board);
+                break;
+            case 2:
+                randomize(board);
+                cout << endl << "Created board:" << endl;
+                printBoard(board);
+                break;
+            case 3:
+                cout << "Exiting Program." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice, enter a valid option." << endl;
+                continue;
+        }
     }
-
     return 0;
 }
