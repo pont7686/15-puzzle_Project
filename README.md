@@ -1,1 +1,1 @@
-# 15-puzzle_Project
+# 15-Puzzle Project
