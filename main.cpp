@@ -5,7 +5,7 @@
 #include <queue>
 #include <set>
 #include <string>
-temp
+
 using namespace std;
 
 const int N = 4;
