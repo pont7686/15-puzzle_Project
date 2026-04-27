@@ -43,12 +43,13 @@ void copyBoard(int boardA[N][N], int boardB[N][N]) {
 
 void printBoard(int board[N][N]) {
     for (int i = 0; i < N; i++) {
+        cout << "|";
         for (int j = 0; j < N; j++) {
-            cout << board[i][j];
+            cout << " " << board[i][j];
             if (board[i][j] < 10) {
-                cout << "  ";
+                cout << "  |";
             } else {
-                cout << " ";
+                cout << " |";
             }
         }
         cout << endl;
@@ -148,18 +149,20 @@ int main() {
     cout << "15-Puzzle Problem:" << endl;
     cout << "1. Create a puzzle" << endl;
     cout << "2. Random a puzzle" << endl;
-    cout << "3. Exit" << endl;
+    cout << "3. Exit" << endl << endl;
     cin >> choice;
     
     switch (choice) {
         case 1:
             inputBoard(board);
-            cout << "Created board:" << endl;
+            cout << endl << "Created board:" << endl;
             printBoard(board);
             break;
         case 2:
             randomize(board);
-
+            cout << endl << "Created board:" << endl;
+            printBoard(board);
+            break;
     }
 
     return 0;
