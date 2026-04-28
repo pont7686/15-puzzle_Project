@@ -142,6 +142,17 @@ int manhattan(int board[N][N]) {
     return dist;
 }
 
+void AStar(int board[N][N]) {
+    priority_queue<State, vector<State>, greater<State>> openSet;
+    set<string> closedSet;
+
+    State start;
+    copyBoard(board, start.board);
+    start.g = 0;
+    start.h = manhattan(board);
+    start.f = start.g + start.h;
+}
+
 int main() {
     int board[N][N];
     int choice, algorithm;
