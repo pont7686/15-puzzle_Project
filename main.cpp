@@ -143,7 +143,7 @@ int manhattan(int board[N][N]) {
 }
 
 void AStar(int board[N][N]) {
-    priority_queue<State, vector<State>, greater<State>> openSet;
+    priority_queue<State, deque<State>, greater<State> > openSet;
     set<string> closedSet;
 
     State start;
