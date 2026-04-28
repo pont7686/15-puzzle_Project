@@ -149,7 +149,7 @@ int main() {
     while (true) {
         cout << "15-Puzzle Problem:" << endl;
         cout << "1. Create a puzzle" << endl;
-        cout << "2. Random a puzzle" << endl;
+        cout << "2. Randomize a puzzle" << endl;
         cout << "3. Exit" << endl << endl;
         cin >> choice;
         
@@ -170,6 +170,31 @@ int main() {
             default:
                 cout << "Invalid choice, enter a valid option." << endl;
                 continue;
+        }
+
+        while (true) {
+            cout << endl << "Choose an algorithm:" << endl;
+            cout << "1. A* Search" << endl;
+            cout << "4. Back to Main Menu" << endl << endl;
+            cin >> algorithm;
+
+            switch (algorithm) {
+                case 1:
+                    if (!isSolvable(board)) {
+                        cout << "This puzzle is not solvable." << endl;
+                    } else {
+                        cout << "Solved puzzle using A* search:" << endl;
+                    }
+                    break;
+                case 4:
+                    cout << "Returning to Main Menu." << endl;
+                    break;
+                default:
+                    cout << "Invalid choice, enter a valid option." << endl;
+                    continue;
+            }
+
+            if (algorithm == 4) break;
         }
     }
     return 0;
