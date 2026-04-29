@@ -3,6 +3,7 @@
 #include <ctime>
 #include <iostream>
 #include <queue>
+#include <stack>
 #include <set>
 #include <string>
 
@@ -62,6 +63,11 @@ bool isGoal(int board[N][N]) {
             if (board[i][j] != goal[i][j])
                 return false;
     return true;
+}
+
+bool isReverse(char last, char now) {
+    return (last=='U'&&now=='D') || (last=='D'&&now=='U') ||
+           (last=='L'&&now=='R') || (last=='R'&&now=='L');
 }
 
 bool isSolvable(int board[N][N]) {
@@ -151,11 +157,118 @@ void AStar(int board[N][N]) {
     start.g = 0;
     start.h = manhattan(board);
     start.f = start.g + start.h;
+    start.path = "";
+
+    openSet.push(start);
+
+    int dx[4] = {-1,1,0,0};
+    int dy[4] = {0,0,-1,1};
+    char moves[4] = {'U','D','L','R'};
+
+    while (!openSet.empty()) {
+        State current = openSet.top();
+        openSet.pop();
+
+        string key = boardToString(current.board);
+        if (closedSet.count(key)) continue;
+        closedSet.insert(key);
+
+        if (isGoal(current.board)) {
+            cout << "Solved puzzle using A* search:\n";
+            cout << "Moves: " << current.path << endl;
+            cout << "Steps: " << current.path.size() << endl;
+            return;
+        }
+
+        int x, y;
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++)
+                if (current.board[i][j] == 0) {
+                    x = i;
+                    y = j;
+                }
+
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
+                State next;
+                copyBoard(current.board, next.board);
+                swap(next.board[x][y], next.board[nx][ny]);
+                next.g = current.g + 1;
+                next.h = manhattan(next.board);
+                next.f = next.g + next.h;
+                next.path = current.path + moves[i];
+                openSet.push(next);
+            }
+        }
+    }
+
+    cout << "No solution found\n";
+}
+
+bool DFS(int board[N][N], int maxDepth) {
+    stack<State> st;
+    set<string> visited;
+
+    State start;
+    copyBoard(board, start.board);
+    start.path = "";
+
+    st.push(start);
+
+    int dx[4] = {-1,1,0,0};
+    int dy[4] = {0,0,-1,1};
+    char moveChar[4] = {'U','D','L','R'};
+
+    while (!st.empty()) {
+        State current = st.top();
+        st.pop();
+
+        if (current.path.size() > maxDepth) continue;
+
+        string key = boardToString(current.board);
+        if (visited.count(key)) continue;
+        visited.insert(key);
+
+        if (isGoal(current.board)) {
+            cout << "Solved puzzle using Depth-First Search:\n";
+            cout << "Moves: " << current.path << endl;
+            cout << "Steps: " << current.path.size() << endl;
+            return true;
+        }
+
+        int x, y;
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++)
+                if (current.board[i][j] == 0) {
+                    x = i;
+                    y = j;
+                }
+
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
+                State next;
+                copyBoard(current.board, next.board);
+                swap(next.board[x][y], next.board[nx][ny]);
+                next.path = current.path + moveChar[i];
+                st.push(next);
+            }
+        }
+    }
+
+    return false;
 }
 
 int main() {
     int board[N][N];
     int choice, algorithm;
+
+    srand(time(0));
     
     while (true) {
         cout << "15-Puzzle Problem:" << endl;
@@ -186,6 +299,7 @@ int main() {
         while (true) {
             cout << endl << "Choose an algorithm:" << endl;
             cout << "1. A* Search" << endl;
+            cout << "2. Depth-First Search" << endl;
             cout << "4. Back to Main Menu" << endl << endl;
             cin >> algorithm;
 
@@ -193,10 +307,17 @@ int main() {
                 case 1:
                     if (!isSolvable(board)) {
                         cout << "This puzzle is not solvable." << endl;
+                        break;
                     } else {
-                        cout << "Solved puzzle using A* search:" << endl;
+                        AStar(board);
                     }
                     break;
+                case 2:
+                    for (int depth = 1; depth <= 50; depth++) {
+                    if (DFS(board, depth)) {
+                        break;
+                    }
+                }
                 case 4:
                     cout << "Returning to Main Menu." << endl;
                     break;
