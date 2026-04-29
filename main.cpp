@@ -264,66 +264,139 @@ bool DFS(int board[N][N], int maxDepth) {
     return false;
 }
 
+void Greedy(int board[N][N]) {
+    priority_queue<State, deque<State>, greater<State> > openSet;
+    set<string> closedSet;
+
+    State start;
+    copyBoard(board, start.board);
+    start.g = 0;
+    start.h = manhattan(board);
+    start.f = start.h;
+    start.path = "";
+
+    openSet.push(start);
+
+    int dx[4] = { -1,1,0,0 };
+    int dy[4] = { 0,0,-1,1 };
+    char moves[4] = { 'U','D','L','R' };
+
+    while (!openSet.empty()) {
+        State current = openSet.top();
+        openSet.pop();
+
+        string key = boardToString(current.board);
+        if (closedSet.count(key)) continue;
+        closedSet.insert(key);
+
+        if (isGoal(current.board)) {
+            cout << "Solved puzzle using Greedy Search:\n";
+            cout << "Moves: " << current.path << endl;
+            cout << "Steps: " << current.path.size() << endl;
+            return;
+        }
+
+        int x, y;
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++)
+                if (current.board[i][j] == 0) {
+                    x = i;
+                    y = j;
+                }
+
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
+                State next;
+                copyBoard(current.board, next.board);
+                swap(next.board[x][y], next.board[nx][ny]);
+                next.g = current.g + 1;
+                next.h = manhattan(next.board);
+                next.f = next.h;  // Greedy: only use heuristic
+                next.path = current.path + moves[i];
+                openSet.push(next);
+            }
+        }
+    }
+
+    cout << "No solution found\n";
+}
+
+
 int main() {
     int board[N][N];
     int choice, algorithm;
 
     srand(time(0));
-    
+
     while (true) {
         cout << "15-Puzzle Problem:" << endl;
         cout << "1. Create a puzzle" << endl;
         cout << "2. Randomize a puzzle" << endl;
         cout << "3. Exit" << endl << endl;
         cin >> choice;
-        
+
         switch (choice) {
-            case 1:
-                inputBoard(board);
-                cout << endl << "Created board:" << endl;
-                printBoard(board);
-                break;
-            case 2:
-                randomize(board);
-                cout << endl << "Created board:" << endl;
-                printBoard(board);
-                break;
-            case 3:
-                cout << "Exiting Program." << endl;
-                return 0;
-            default:
-                cout << "Invalid choice, enter a valid option." << endl;
-                continue;
+        case 1:
+            inputBoard(board);
+            cout << endl << "Created board:" << endl;
+            printBoard(board);
+            break;
+        case 2:
+            randomize(board);
+            cout << endl << "Created board:" << endl;
+            printBoard(board);
+            break;
+        case 3:
+            cout << "Exiting Program." << endl;
+            return 0;
+        default:
+            cout << "Invalid choice, enter a valid option." << endl;
+            continue;
         }
 
         while (true) {
             cout << endl << "Choose an algorithm:" << endl;
             cout << "1. A* Search" << endl;
             cout << "2. Depth-First Search" << endl;
+            cout << "3. Greedy Search" << endl;
             cout << "4. Back to Main Menu" << endl << endl;
             cin >> algorithm;
 
             switch (algorithm) {
-                case 1:
-                    if (!isSolvable(board)) {
-                        cout << "This puzzle is not solvable." << endl;
-                        break;
-                    } else {
-                        AStar(board);
-                    }
+            case 1:
+                if (!isSolvable(board)) {
+                    cout << "This puzzle is not solvable." << endl;
                     break;
-                case 2:
-                    for (int depth = 1; depth <= 50; depth++) {
+                }
+                else {
+                    AStar(board);
+                }
+                break;
+            case 2:
+                for (int depth = 1; depth <= 50; depth++) {
                     if (DFS(board, depth)) {
                         break;
                     }
                 }
-                case 4:
-                    cout << "Returning to Main Menu." << endl;
+                break;
+            case 3:
+                if (!isSolvable(board)) {
+                    cout << "This puzzle is not solvable." << endl;
                     break;
-                default:
-                    cout << "Invalid choice, enter a valid option." << endl;
-                    continue;
+                }
+                else {
+                    Greedy(board);
+                }
+                break;
+            case 4:
+                cout << "Returning to Main Menu." << endl;
+                break;
+            default:
+                cout << "Invalid choice, enter a valid option." << endl;
+                continue;
             }
 
             if (algorithm == 4) break;
