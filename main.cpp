@@ -261,6 +261,7 @@ bool DFS(int board[N][N], int maxDepth) {
         }
     }
 
+    cout << "No solution found at depth " << maxDepth << endl;
     return false;
 }
 
@@ -314,7 +315,7 @@ void Greedy(int board[N][N]) {
                 swap(next.board[x][y], next.board[nx][ny]);
                 next.g = current.g + 1;
                 next.h = manhattan(next.board);
-                next.f = next.h;  // Greedy: only use heuristic
+                next.f = next.h;
                 next.path = current.path + moves[i];
                 openSet.push(next);
             }
@@ -332,7 +333,7 @@ int main() {
     srand(time(0));
 
     while (true) {
-        cout << "15-Puzzle Problem:" << endl;
+        cout << "15-Puzzle Problem Menu:" << endl;
         cout << "1. Create a puzzle" << endl;
         cout << "2. Randomize a puzzle" << endl;
         cout << "3. Exit" << endl << endl;
@@ -376,6 +377,10 @@ int main() {
                 }
                 break;
             case 2:
+                if (!isSolvable(board)) {
+                    cout << "This puzzle is not solvable." << endl;
+                    break;
+                }
                 for (int depth = 1; depth <= 50; depth++) {
                     if (DFS(board, depth)) {
                         break;
