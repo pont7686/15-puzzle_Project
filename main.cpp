@@ -1,11 +1,11 @@
-#include <cmath>
-#include <cstdlib>
-#include <ctime>
 #include <iostream>
 #include <queue>
 #include <stack>
 #include <set>
 #include <string>
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
 
 using namespace std;
 
@@ -381,7 +381,7 @@ int main() {
                     cout << "This puzzle is not solvable." << endl;
                     break;
                 }
-                for (int depth = 1; depth <= 50; depth++) {
+                for (int depth = 1; depth <= 40; depth++) {
                     if (DFS(board, depth)) {
                         break;
                     }
