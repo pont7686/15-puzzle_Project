@@ -65,11 +65,6 @@ bool isGoal(int board[N][N]) {
     return true;
 }
 
-bool isReverse(char last, char now) {
-    return (last=='U'&&now=='D') || (last=='D'&&now=='U') ||
-           (last=='L'&&now=='R') || (last=='R'&&now=='L');
-}
-
 bool isSolvable(int board[N][N]) {
     int array[16];
     int k = 0;
