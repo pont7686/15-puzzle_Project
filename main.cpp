@@ -325,7 +325,6 @@ void Greedy(int board[N][N]) {
     cout << "No solution found\n";
 }
 
-
 int main() {
     int board[N][N];
     int choice, algorithm;
