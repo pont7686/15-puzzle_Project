@@ -208,7 +208,7 @@ void AStar(int board[N][N]) {
     cout << "No solution found\n";
 }
 
-bool DFS(int board[N][N], int maxDepth) {
+bowol DFS(int board[N][N], int maxDepth) {
     stack<State> st;
     set<string> visited;
 
@@ -360,23 +360,14 @@ int main() {
 
         while (true) {
             cout << endl << "Choose an algorithm:" << endl;
-            cout << "1. A* Search" << endl;
-            cout << "2. Depth-First Search" << endl;
-            cout << "3. Greedy Search" << endl;
+            cout << "1. Depth-First Search" << endl;
+            cout << "2. Greedy Search" << endl;
+            cout << "3. A* Search" << endl;
             cout << "4. Back to Main Menu" << endl << endl;
             cin >> algorithm;
 
             switch (algorithm) {
             case 1:
-                if (!isSolvable(board)) {
-                    cout << "This puzzle is not solvable." << endl;
-                    break;
-                }
-                else {
-                    AStar(board);
-                }
-                break;
-            case 2:
                 if (!isSolvable(board)) {
                     cout << "This puzzle is not solvable." << endl;
                     break;
@@ -387,13 +378,22 @@ int main() {
                     }
                 }
                 break;
-            case 3:
+            case 2:
                 if (!isSolvable(board)) {
                     cout << "This puzzle is not solvable." << endl;
                     break;
                 }
                 else {
                     Greedy(board);
+                }
+                break;
+            case 3:
+                if (!isSolvable(board)) {
+                    cout << "This puzzle is not solvable." << endl;
+                    break;
+                }
+                else {
+                    AStar(board);
                 }
                 break;
             case 4:
