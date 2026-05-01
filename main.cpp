@@ -208,7 +208,7 @@ void AStar(int board[N][N]) {
     cout << "No solution found\n";
 }
 
-bowol DFS(int board[N][N], int maxDepth) {
+bool DFS(int board[N][N], int maxDepth) {
     stack<State> st;
     set<string> visited;
 
@@ -233,7 +233,7 @@ bowol DFS(int board[N][N], int maxDepth) {
         visited.insert(key);
 
         if (isGoal(current.board)) {
-            cout << "Solved puzzle using Depth-First Search:\n";
+            cout << "Solved puzzle using Depth-First Search at depth " << maxDepth << ":\n";
             cout << "Moves: " << current.path << endl;
             cout << "Steps: " << current.path.size() << endl;
             return true;
